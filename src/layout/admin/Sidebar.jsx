@@ -116,7 +116,7 @@ const Sidebar = ({ isMobileOpen, setIsMobileOpen, menuButtonRef }) => {
             </NavLink>
           ))}
         </nav>
-        <motion.div
+        {/* <motion.div
           className="px-3"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
@@ -131,7 +131,7 @@ const Sidebar = ({ isMobileOpen, setIsMobileOpen, menuButtonRef }) => {
             <FaFolderOpen className="mr-2 text-lg" />
             <span className="text-sm font-medium">File Browser</span>
           </a>
-        </motion.div>
+        </motion.div> */}
         <motion.div
           className="px-3 pb-4"
           whileHover={{ scale: 1.02 }}
@@ -180,7 +180,7 @@ const Sidebar = ({ isMobileOpen, setIsMobileOpen, menuButtonRef }) => {
             </NavLink>
           ))}
         </nav>
-        <motion.div
+        {/* <motion.div
           className="px-3 mb-2 w-1/2"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
@@ -195,7 +195,7 @@ const Sidebar = ({ isMobileOpen, setIsMobileOpen, menuButtonRef }) => {
             <FaFolderOpen className="mr-2 text-lg" />
             <span className="text-sm font-medium">File Browser</span>
           </a>
-        </motion.div>
+        </motion.div> */}
 
         <motion.div className="px-3 py-4 w-1/2">
           {/* ... existing mobile logout button ... */}
