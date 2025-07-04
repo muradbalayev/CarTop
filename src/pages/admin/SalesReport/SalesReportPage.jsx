@@ -1,7 +1,7 @@
 import React from 'react'
-import SalesCharts from '../../../components/Admin/SalesReport/SalesCharts'
-import SalesTable from '../../../components/Admin/SalesReport/SalesTable'
-import SalesTotals from '../../../components/Admin/SalesReport/SalesTotals'
+import SalesTable from '../../../components/admin/SalesReport/SalesTable'
+import SalesTotals from '../../../components/admin/SalesReport/SalesTotals'
+import SalesCharts from '../../../components/admin/SalesReport/SalesCharts'
 
 function SalesReportPage() {
   return (
