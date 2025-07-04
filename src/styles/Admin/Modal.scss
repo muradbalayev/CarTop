@@ -1,0 +1,103 @@
+/* Modal Container */
+
+.addModalContainer {
+    position: fixed; /* Change to fixed for better positioning */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%; /* Full viewport height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: 10; /* Ensure it's on top */
+  }
+  
+  /* Modal Form */
+  .addModalForm {
+    background: white; /* White background for the form */
+    padding: 20px;
+    min-width: 50%;
+    max-width: 90%; /* Max width to ensure it doesn't get too large */
+    max-height: 90vh; /* Max height to ensure it doesn't exceed the viewport */
+    overflow-y: auto; /* Vertical scroll if content overflows */
+    overflow-x: hidden; /* Hide horizontal overflow */
+    border-radius: 8px; /* Rounded corners */
+    position: relative; /* Relative positioning for the close button */
+  }
+
+  .react-datepicker-wrapper{
+    width: 94%
+  }
+  
+  
+  /* Close Button */
+  .closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    z-index: 11; /* Ensure it's above other content */
+  }
+  
+  .inputContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .inputContainer > .form-control {
+    width: 100%;
+  }
+  
+  .inputRow {
+    flex: 1 1 1;
+  }
+  
+  .title {
+    font-family: "Poppins", sans-serif;
+    font-weight: 800;
+  }
+  
+  .action-btn {
+    background-color: #214440;
+    color: white;
+    padding: 10px 14px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .action-btn:hover {
+    background-color: #1b3b36; /* Darken the button on hover */
+    transform: scale(1.05); /* Slightly scale up on hover */
+  }
+  
+  .form-label {
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 3px;
+    color: black;
+    font-family: Poppins, "sans-serif";
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 5px 10px;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid gray;
+    transition: all 0.3s ease, transform 0.2s ease;
+  }
+  
+  .form-control:focus {
+    border-color: #214440; /* Change border color on focus */
+    padding-left: 15px;
+    box-shadow: 0 0 3px rgb(16, 104, 48);
+  }
+
+  
+@media (min-width: 768px) {
+    .form-label{
+     font-size: 16px;
+    }
+   }

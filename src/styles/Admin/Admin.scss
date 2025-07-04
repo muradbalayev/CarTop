@@ -1,0 +1,239 @@
+
+:root {
+  --bg-color: rgb(47, 47, 47);
+  --card-bg: #efefef;
+}
+
+.wrapper-admin {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-family: "Inter", sans-serif;
+  padding: 2rem 0.6rem 0rem 0.6rem;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background-color: white;
+  position: relative;
+}
+
+header {
+  padding: 1rem 1rem 0 1rem;
+}
+
+section{
+  // padding: 1rem 1rem 0 2rem;
+  font-family: Poppins, 'sans-serif';
+}
+
+main{
+  padding: 0rem 0.5rem 0 0.5rem;
+}
+
+.react-select-container {
+  width: 100%;
+  
+  .react-select__control {
+    border-radius: 6px;
+    border-color: #d1d5db;
+    min-height: 42px;
+    
+    &:hover {
+      border-color: #d1d5db;
+    }
+    
+    &--is-focused {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 1px #3b82f6;
+    }
+  }
+  
+  .react-select__option {
+    &--is-focused {
+      background-color: #f3f4f6;
+    }
+    &--is-selected {
+      background-color: #3b82f6;
+    }
+  }
+}
+
+.react-responsive-modal-modal{
+  border-radius: 15px;
+  padding: 0!important;
+}
+
+
+.header-title {
+  font-family: Poppins, "sans-serif";
+  font-size: 2rem;
+  font-weight: 600;
+  padding-left: 18px;
+  color: rgb(7, 33, 90)!important;
+}
+
+.poppins {
+  font-family: Poppins, "sans-serif";
+}
+
+
+.menu-btn{
+  transition: .3s ease;
+
+  &:hover{
+    background-color: rgba(255, 166, 0, 0.713);
+   }
+}
+
+
+.btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 10px 10px 0px;
+  gap: 4px;
+  border-radius: 10px;
+  font-family: Poppins, "sans-serif";
+  font-weight: 400;
+  cursor: pointer;
+  transition: 0.3s ease;
+  color: rgba(255, 166, 0, 0.713);
+
+  &:hover {
+    background-color: rgba(255, 166, 0, 0.713);
+    color: white !important;
+    font-weight: 600;
+    padding-left: 5px;
+  }
+
+  p {
+    cursor: pointer;
+  }
+}
+
+// Account
+.menu a {
+  padding: 3rem 1.5rem;
+}
+
+/* Table header */
+/* Styling the table headers */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.css-26rv32-MuiButtonBase-root-MuiButton-root {
+  font-family: Poppins, "sans-serif"!important;
+}
+.css-1dabqdn-MuiButtonBase-root-MuiButton-root {
+  font-family: Poppins, "sans-serif"!important;
+}
+.css-1qyla8l-MuiButtonBase-root-MuiButton-root {
+  font-family: Poppins, "sans-serif"!important;
+}
+
+table th {
+  font-family: Poppins, "sans-serif";
+  font-weight: 300;
+  background-color: rgb(17 24 39);
+  color: white;
+  padding: 20px 10px;
+  position: relative;
+  text-align: center;
+}
+
+table tr {
+  border-bottom: 1px solid rgb(209, 206, 206);
+}
+
+table td {
+  font-family: Poppins, "sans-serif";
+  font-size: 0.8rem;
+  padding: 15px;
+  text-align: center;
+  position: relative;
+  min-width: 150px;
+
+  // &:not(:first-child) {
+  // min-width: 150px;
+  // }
+}
+
+table th::after,
+table td::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 20px;
+  background-color: #cbc8c8be;
+}
+
+/* Remove the border from the last cell and header in each row */
+table th:last-child::after,
+table td:last-child::after {
+  display: none;
+}
+
+/* Add rounded corners to the first and last header */
+table th:first-child {
+  border-top-left-radius: 15px;
+}
+
+table th:last-child {
+  border-top-right-radius: 15px;
+}
+
+.hudJpJ {
+  background-color: var(--bg-color) !important;
+  color: white;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  font-weight: bold !important;
+  font-size: 0.9rem !important;
+}
+
+//Order
+
+
+
+.button {
+  cursor: pointer;
+}
+
+
+
+/* Sales */
+.total-card{
+  background-color: var(--card-bg);
+}
+
+//Lightbox
+.yarl__thumbnails_track{
+  background-color: transparent!important;
+}
+
+
+
+
+
+@media (min-width: 1024px) {
+ 
+  main{
+      padding: 0rem 2rem 0 2rem;
+  }
+
+}
+@media (min-width: 768px) {
+  .header-title{
+    font-size: 2.5rem;
+  }
+
+}
+
+
+

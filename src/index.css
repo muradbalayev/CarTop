@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import "tailwindcss";
+
+
+@font-face {
+    font-family: "PP Neue Montreal";
+    font-weight: 200;
+    font-style: normal;
+    src: url("./assets/fonts/PPNeueMontreal-Thin.ttf") format("truetype");
+  }
+  
+  @font-face {
+    font-family: "PP Neue Montreal";
+    font-weight: 300;
+    font-style: normal;
+    src: url("./assets/fonts/PPNeueMontreal-Light.ttf") format("truetype");
+  }
+  
+  @font-face {
+    font-family: "PP Neue Montreal";
+    font-weight: 400;
+    font-style: normal;
+    src: url("./assets/fonts/PPNeueMontreal-Book.ttf") format("truetype");
+  }
+  
+  @font-face {
+    font-family: "PP Neue Montreal";
+    font-weight: 500;
+    font-style: normal;
+    src: url("./assets/fonts/PPNeueMontreal-Regular.ttf") format("truetype");
+  }
+  
+  @font-face {
+    font-family: "PP Neue Montreal";
+    font-weight: 600;
+    font-style: normal;
+    src: url("./assets/fonts/PPNeueMontreal-Medium.ttf") format("truetype");
+  }
+  
+  @font-face {
+    font-family: "PP Neue Montreal";
+    font-weight: 700;
+    font-style: normal;
+    src: url("./assets/fonts/PPNeueMontreal-Bold.ttf") format("truetype");
+  }
+  
+  * {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: "PP Neue Montreal";
+  }
+
+  .inter{
+    font-family: "Inter", sans-serif!important;
+  }
+  
+
+  
+::-webkit-scrollbar {
+  width: 3.5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #1427ce;
+  border: 2px solid #1427ce;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #1427ce;
+}
+
+
+/* Target horizontal scrollbar specifically */
+::-webkit-scrollbar:horizontal {
+height: 4px; /* Adjust the height of the horizontal scrollbar */
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+background-color: #1427ce;
+border: 2px solid #1427ce;
+}
+
+::-webkit-scrollbar-thumb:horizontal:hover {
+background-color:#1427ce;
+}
