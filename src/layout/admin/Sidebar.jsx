@@ -1,5 +1,5 @@
 import { NavLink, Link } from "react-router-dom";
-import { FaAddressCard, FaChartLine, FaMoneyBills, FaPhone, FaUser } from "react-icons/fa6";
+import { FaAddressBook, FaAddressCard, FaChartLine, FaMoneyBills, FaPassport, FaPhone, FaUser } from "react-icons/fa6";
 import React, { useCallback, useEffect, useRef } from "react";
 import { BiLink, BiLogOut, BiSolidArchive } from "react-icons/bi";
 import {
@@ -24,6 +24,7 @@ import { LuAirplay } from "react-icons/lu";
 import { RiCoupon3Line } from "react-icons/ri";
 import { IoHome } from "react-icons/io5";
 import { IoMdChatbubbles } from "react-icons/io";
+import { Home, User } from "lucide-react";
 
 const Sidebar = ({ isMobileOpen, setIsMobileOpen, menuButtonRef }) => {
   const mobileSidebarRef = useRef(null);
@@ -55,27 +56,39 @@ const Sidebar = ({ isMobileOpen, setIsMobileOpen, menuButtonRef }) => {
     {
       id: 1,
       title: "Sales Report",
-      icon: <FaChartLine size={20} />,
+      icon: <FaChartLine size={18} />,
       path: "/admin/dashboard",
     },
     {
       id:2,
       title:  "İstifadəçilər",
-      icon: <FaUser size={20} />,
+      icon: <FaUser size={18} />,
       path: "/admin/dashboard/users",
     },
-    // {
-    //   id: 3,
-    //   title: "Məhsullar",
-    //   icon: <FaShoppingBasket size={20} />,
-    //   path: "/admin/dashboard/products",
-    // },
+    {
+      id: 3,
+      title: "Partners",
+      icon: <FaPassport size={18} />,
+      path: "/admin/dashboard/partners",
+    },
     {
       id: 4,
-      title: "Sifarişlər",
-      icon: <FaShoppingBasket size={20} />,
-      path: "/admin/dashboard/orders",
+      title: "Elanlar",
+      icon: <FaAddressBook size={18} />,
+      path: "/admin/dashboard/posts",
     },
+     {
+      id: 5,
+      title: "Bildirişlər",
+      icon: <FaBell size={18} />,
+      path: "/admin/dashboard/notifications",
+    },
+    // {
+    //   id: 4,
+    //   title: "Sifarişlər",
+    //   icon: <FaShoppingBasket size={20} />,
+    //   path: "/admin/dashboard/orders",
+    // },
   ];
 
   return (
@@ -87,12 +100,14 @@ const Sidebar = ({ isMobileOpen, setIsMobileOpen, menuButtonRef }) => {
           className="flex flex-col items-center py-6"
         >
           <Link to="/" className="absolute top-3 left-3">
-            <IoHome size={22} color="gray" />
+            <Home size={22} color="gray" />
           </Link>
-          <div className="p-3 bg-gradient-to-tr from-blue-500 to-purple-500 rounded-2xl mb-3">
-            <FaUser className="text-white text-2xl" />
+          <div
+            className={`profile-img bg-white/10 rounded-xl border border-white/20 transition duration-300 p-3`}
+          >
+            <User size={40} />
           </div>
-          <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-200">
+          <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mt-2">
             Admin Panel
           </h3>
         </motion.div>
@@ -104,7 +119,7 @@ const Sidebar = ({ isMobileOpen, setIsMobileOpen, menuButtonRef }) => {
               flex items-center link transition-all
               text-sm font-medium
               ${isActive
-                  ? "bg-blue-500 text-white shadow-lg"
+                  ? "bg-blue-600 text-white shadow-lg"
                   : "text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
                 }
             `}
@@ -112,7 +127,7 @@ const Sidebar = ({ isMobileOpen, setIsMobileOpen, menuButtonRef }) => {
               end
             >
               {item.icon}
-              <p> {item.title}</p>
+              <p className="ml-2"> {item.title}</p>
             </NavLink>
           ))}
         </nav>
@@ -154,10 +169,12 @@ const Sidebar = ({ isMobileOpen, setIsMobileOpen, menuButtonRef }) => {
           }`}
       >
         <div className="w-full flex flex-col gap-3 items-center justify-start mt-6">
-          <div className="profile-img flex bg-gray-100 rounded-full transition duration-300 sm:p-5 p-3">
-            <FaUser color="gray" size={50} />
+        <div
+            className={`profile-img bg-white/10 rounded-xl border border-white/20 transition duration-300 p-4`}
+          >
+            <User size={40} />
           </div>
-          <h3 className="poppins text-sm text-center">Coffee Shop Name</h3>
+          <h3 className="poppins text-sm text-center">Admin</h3>
         </div>
         <nav className="links w-full mt-10 overflow-auto mb-4">
           {SIDEBARITEMS.map((item) => (
