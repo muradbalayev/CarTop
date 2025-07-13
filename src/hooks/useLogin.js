@@ -8,7 +8,7 @@ const useLogin = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   
-  const login = async (emailOrPhone, password, rememberMe, returnResult = false) => {
+  const login = async (username, password, rememberMe, returnResult = false) => {
     try {
       // Only show global loading after successful login
       // We'll handle the button loading state in the component
@@ -17,7 +17,7 @@ const useLogin = () => {
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: emailOrPhone, password }),
+        body: JSON.stringify({ username, password }),
       });
 
       if (!response.ok) {
@@ -41,6 +41,7 @@ const useLogin = () => {
 
       const storage = rememberMe ? localStorage : sessionStorage;
       storage.setItem("refreshToken", refreshToken);
+      storage.setItem("role", "admin");
 
       // Clear opposite storage
       const oppositeStorage = rememberMe ? sessionStorage : localStorage;
@@ -59,11 +60,11 @@ const useLogin = () => {
       }
     } catch (error) {
       // If returnResult is true, return an error object instead of showing a toast
+      toast.error(error.message || "Login failed");
       if (returnResult) {
         return { success: false, error: { message: error.message || "Login failed" } };
       }
       
-      toast.error(error.message || "Login failed");
       console.error(error);
     }
   };

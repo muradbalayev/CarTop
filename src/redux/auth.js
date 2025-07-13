@@ -8,7 +8,7 @@ export const baseQueryWithReauth = async (args, api, extraOptions) => {
         prepareHeaders: (headers, { getState }) => {
             const { accessToken } = getState().auth;
             if (accessToken) {
-                headers.set('Authorization', `Bearer ${accessToken} type=access`);
+                headers.set('Authorization', `Bearer ${accessToken}`);
             }
             return headers;
         },
@@ -18,9 +18,9 @@ export const baseQueryWithReauth = async (args, api, extraOptions) => {
         const refreshToken = api.getState().auth.refreshToken;
 
         if (refreshToken) {
-            const refreshResponse = await fetch(`${import.meta.env.VITE_API_GLOBAL_URL}/user/auth/refresh-token`, {
+            const refreshResponse = await fetch(`${import.meta.env.VITE_API_GLOBAL_URL}/admin/auth/refresh`, {
                 method: 'POST',
-                headers: { 'Authorization': `Bearer ${refreshToken} type=refresh` },
+                headers: { 'Authorization': `Bearer ${refreshToken}` },
             });
 
             if (refreshResponse.ok) {
@@ -30,7 +30,7 @@ export const baseQueryWithReauth = async (args, api, extraOptions) => {
                 result = await fetchBaseQuery({
                     baseUrl: `${import.meta.env.VITE_API_GLOBAL_URL}`,
                     prepareHeaders: (headers) => {
-                        headers.set('Authorization', `Bearer ${newAccessToken} type=access`);
+                        headers.set('Authorization', `Bearer ${newAccessToken}`);
                         return headers;
                     },
                 })(args, api, extraOptions);

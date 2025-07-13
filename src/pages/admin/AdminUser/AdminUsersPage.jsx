@@ -1,6 +1,31 @@
 import React, { useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import { useGetUserQuery } from "../../../redux/services/adminUserApi";
+import {
+  useBlockUserMutation,
+  useDeleteUserMutation,
+  useGetUserQuery,
+  usePermanentDeleteUserMutation,
+  useRestoreUserMutation,
+  useUnblockUserMutation,
+  useUserPhotoDeleteMutation,
+} from "../../../redux/services/adminUserApi";
+import {
+  handleRestoreUser,
+  handleDeleteUser,
+  handleBlockUser,
+  handleUnblockUser,
+  handlePermanentDeleteUser,
+  handleUserPhotoDelete,
+} from "./components/UserUtils";
+import {
+  FiEye,
+  FiRepeat,
+  FiTrash2,
+  FiUserX,
+  FiUserCheck,
+  FiSlash,
+  FiX,
+} from "react-icons/fi";
 import UserModal from "./UserModal";
 import Lightbox from "yet-another-react-lightbox";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
@@ -8,7 +33,6 @@ import Fullscreen from "yet-another-react-lightbox/plugins/fullscreen";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
 import "yet-another-react-lightbox/styles.css";
 import { Pagination } from "../../../hooks/Pagination";
-import { FiEye } from "react-icons/fi";
 
 const ImageModal = ({ imageUrl, isOpen, onClose }) => {
   return (
@@ -34,10 +58,34 @@ const ImageModal = ({ imageUrl, isOpen, onClose }) => {
 const AdminUserPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filterText, setFilterText] = useState(""); // New filter state
-  const { data, isLoading, isFetching } = useGetUserQuery({page: currentPage, name: filterText});
-console.log(data)
-const [imageSrc, setImageSrc] = useState("");
-const [openLightbox, setOpenLightbox] = useState(false);
+  const { data, isDataLoading, isFetching } = useGetUserQuery({
+    page: currentPage,
+    name: filterText,
+  });
+  const [restoreUser, { isLoading: restoreIsLoading }] =
+    useRestoreUserMutation();
+  const [deleteUser, { isLoading: deleteIsLoading }] = useDeleteUserMutation();
+  const [blockUser, { isLoading: blockIsLoading }] = useBlockUserMutation();
+  const [unblockUser, { isLoading: unblockIsLoading }] =
+    useUnblockUserMutation();
+  const [permanentDeleteUser, { isLoading: permanentDeleteIsLoading }] =
+    usePermanentDeleteUserMutation();
+  const [userPhotoDelete, { isLoading: userPhotoDeleteIsLoading }] =
+    useUserPhotoDeleteMutation();
+
+  const isLoading =
+    isDataLoading ||
+    restoreIsLoading ||
+    deleteIsLoading ||
+    blockIsLoading ||
+    unblockIsLoading ||
+    permanentDeleteIsLoading ||
+    userPhotoDeleteIsLoading;
+
+  console.log(data);
+
+  const [imageSrc, setImageSrc] = useState("");
+  const [openLightbox, setOpenLightbox] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [modalData, setModalData] = useState(null);
@@ -45,7 +93,6 @@ const [openLightbox, setOpenLightbox] = useState(false);
   const handleShowDetails = (user) => {
     setModalData(user);
   };
-
 
   const getPaginationRange = () => {
     if (!data?.pagination?.totalPages) return [];
@@ -77,18 +124,15 @@ const [openLightbox, setOpenLightbox] = useState(false);
     return range;
   };
 
-
   if (isLoading)
     return (
       <div className="w-full flex justify-center items-center min-h-screen gap-3">
-         Loading...
+        Loading...
       </div>
     );
 
   // if (isError)
   //   return <div className="text-red-500 p-8"> Xəta </div>;
-
-
 
   // Optional: if you want to show a modal for an enlarged image
   const closeModal = () => {
@@ -98,200 +142,196 @@ const [openLightbox, setOpenLightbox] = useState(false);
     }, 300);
   };
 
-
-
   const handleImageClick = (par) => {
-    const url = `${import.meta.env.VITE_API_IMAGE_URL
-      }/public/uploads/users/profile_pictures/${par}`;
+    const url = `${
+      import.meta.env.VITE_API_IMAGE_URL
+    }/public/uploads/users/profile_pictures/${par}`;
     setImageSrc(url);
     setOpenLightbox(true);
   };
 
+  // const user = {
+  //   users: [
+  //     {
+  //       /* --- BASIC FIELDS --------------------------------------------------- */
+  //       _id: "1",
+  //       firstName: "Murad",
+  //       secondName: "Balayev",
+  //       profilePicture: "", // boşdursa avatar servisi işləyəcək
+  //       email: "murad.balayev@example.com",
+  //       phoneNumber: "+994553951010",
+  //       gender: "male",
+  //       birthDate: "2003-04-15T00:00:00.000Z",
 
-  const user = {
-    users: [
-      {
-        /* --- BASIC FIELDS --------------------------------------------------- */
-        _id: "1",
-        firstName: "Murad",
-        secondName: "Balayev",
-        profilePicture: "",          // boşdursa avatar servisi işləyəcək
-        email: "murad.balayev@example.com",
-        phoneNumber: "+994553951010",
-        gender: "male",
-        birthDate: "2003-04-15T00:00:00.000Z",
-  
-        /* --- ACCOUNT INFO --------------------------------------------------- */
-        balance: 125.75,
-        createdAt: "2024-12-01T10:21:00.000Z",
-        updatedAt: "2025-06-25T14:40:00.000Z",
-        isBlocked: false,
-        isDeleted: false,
-  
-        /* --- ADDRESSES TAB -------------------------------------------------- */
+  //       /* --- ACCOUNT INFO --------------------------------------------------- */
+  //       balance: 125.75,
+  //       createdAt: "2024-12-01T10:21:00.000Z",
+  //       updatedAt: "2025-06-25T14:40:00.000Z",
+  //       isBlocked: false,
+  //       isDeleted: false,
 
-  
-        /* --- FAVORITES TAB -------------------------------------------------- */
-        favoriteProducts: [
-          {
-            _id: "p101",
-            name: { az: "Latte Classic" },
-            code: "LC‑001",
-            price: 4.5,
-            discount: { percentage: 10 },
-            imageUrls: ["latte.jpg"]
-          },
-          "p110"                              // sadəcə ID ötürmək də uyğundur
-        ],
-  
-        /* --- CART TAB ------------------------------------------------------- */
-        cart: [
-          {
-            _id: "c1",
-            product: {
-              _id: "p205",
-              name: { az: "Flat White" },
-              code: "FW‑002",
-              price: 5,
-              discount: { percentage: 0 },
-              imageUrls: ["flatwhite.jpg"]
-            },
-            quantity: 2
-          }
-        ]
-      },
-  
-      /* ====== 2‑ci İSTİFADƏÇİ ============================================= */
-      {
-        _id: "2",
-        firstName: "Aysel",
-        secondName: "Hüseynova",
-        profilePicture: "",
-        email: "aysel.huseynova@example.com",
-        phoneNumber: "+994505551122",
-        gender: "female",
-        birthDate: "1999-02-27T00:00:00.000Z",
-        balance: 54,
-        createdAt: "2025-01-18T09:30:00.000Z",
-        updatedAt: "2025-06-20T12:10:00.000Z",
-        isBlocked: false,
-        isDeleted: false,
+  //       /* --- ADDRESSES TAB -------------------------------------------------- */
 
-        favoriteProducts: [],
-        cart: []
-      },
-  
-      /* ====== 3‑cü İSTİFADƏÇİ ============================================= */
-      {
-        _id: "3",
-        firstName: "Kamran",
-        secondName: "Əliyev",
-        profilePicture: "",
-        email: "kamran.aliyev@example.com",
-        phoneNumber: "+994704441122",
-        gender: "male",
-        birthDate: "1997-11-05T00:00:00.000Z",
-        balance: 0,
-        createdAt: "2025-03-02T15:05:00.000Z",
-        updatedAt: "2025-05-30T08:12:00.000Z",
-        isBlocked: true,
-        isDeleted: false,
-        addresses: [],
-        favoriteProducts: ["p130", "p135"],
-        cart: []
-      },
-  
-      /* ====== 4‑cü İSTİFADƏÇİ ============================================= */
-      {
-        _id: "4",
-        firstName: "Nigar",
-        secondName: "Məmmədova",
-        profilePicture: "",
-        email: "nigar.mammadova@example.com",
-        phoneNumber: "+994505551133",
-        gender: "female",
-        birthDate: "2000-07-08T00:00:00.000Z",
-        balance: 310.2,
-        createdAt: "2024-11-15T11:00:00.000Z",
-        updatedAt: "2025-06-28T09:00:00.000Z",
-        isBlocked: false,
-        isDeleted: true,
-        favoriteProducts: [],
-        cart: [
-          {
-            product: "p250",      // yalnız ID
-            quantity: 1
-          }
-        ]
-      },
-  
-      /* ====== 5‑ci İSTİFADƏÇİ ============================================= */
-      {
-        _id: "5",
-        firstName: "Elvin",
-        secondName: "Quliyev",
-        profilePicture: "",
-        email: "elvin.quliyev@example.com",
-        phoneNumber: "+994555678910",
-        gender: "male",
-        birthDate: "1998-09-12T00:00:00.000Z",
-        balance: 70,
-        createdAt: "2025-02-11T13:45:00.000Z",
-        updatedAt: "2025-06-29T18:22:00.000Z",
-        isBlocked: false,
-        isDeleted: false,
-        addresses: [],
-        favoriteProducts: [],
-        cart: []
-      },
-  
-      /* ====== 6‑cı İSTİFADƏÇİ ============================================= */
-      {
-        _id: "6",
-        firstName: "Zəhra",
-        secondName: "Rzayeva",
-        profilePicture: "",
-        email: "zehra.rzayeva@example.com",
-        phoneNumber: "+994505551144",
-        gender: "female",
-        birthDate: "2002-06-20T00:00:00.000Z",
-        balance: 198.9,
-        createdAt: "2025-04-07T08:05:00.000Z",
-        updatedAt: "2025-06-30T11:55:00.000Z",
-        isBlocked: false,
-        isDeleted: false,
-        favoriteProducts: [
-          {
-            _id: "p301",
-            name: { az: "Espresso" },
-            code: "ES‑005",
-            price: 3,
-            discount: { percentage: 0 },
-            imageUrls: []
-          }
-        ],
-        cart: [
-          {
-            _id: "c6",
-            product: {
-              _id: "p302",
-              name: { az: "Americano" },
-              code: "AM‑006",
-              price: 3.5,
-              discount: { percentage: 5 },
-              imageUrls: []
-            },
-            quantity: 3
-          }
-        ]
-      }
-    ]
-  };
-  
-  
+  //       /* --- FAVORITES TAB -------------------------------------------------- */
+  //       favoriteProducts: [
+  //         {
+  //           _id: "p101",
+  //           name: { az: "Latte Classic" },
+  //           code: "LC‑001",
+  //           price: 4.5,
+  //           discount: { percentage: 10 },
+  //           imageUrls: ["latte.jpg"],
+  //         },
+  //         "p110", // sadəcə ID ötürmək də uyğundur
+  //       ],
 
-  
-    const imgUrl = `${import.meta.env.VITE_API_IMAGE_URL}/public/uploads/users/profile_pictures`;
+  //       /* --- CART TAB ------------------------------------------------------- */
+  //       cart: [
+  //         {
+  //           _id: "c1",
+  //           product: {
+  //             _id: "p205",
+  //             name: { az: "Flat White" },
+  //             code: "FW‑002",
+  //             price: 5,
+  //             discount: { percentage: 0 },
+  //             imageUrls: ["flatwhite.jpg"],
+  //           },
+  //           quantity: 2,
+  //         },
+  //       ],
+  //     },
+
+  //     /* ====== 2‑ci İSTİFADƏÇİ ============================================= */
+  //     {
+  //       _id: "2",
+  //       firstName: "Aysel",
+  //       secondName: "Hüseynova",
+  //       profilePicture: "",
+  //       email: "aysel.huseynova@example.com",
+  //       phoneNumber: "+994505551122",
+  //       gender: "female",
+  //       birthDate: "1999-02-27T00:00:00.000Z",
+  //       balance: 54,
+  //       createdAt: "2025-01-18T09:30:00.000Z",
+  //       updatedAt: "2025-06-20T12:10:00.000Z",
+  //       isBlocked: false,
+  //       isDeleted: false,
+
+  //       favoriteProducts: [],
+  //       cart: [],
+  //     },
+
+  //     /* ====== 3‑cü İSTİFADƏÇİ ============================================= */
+  //     {
+  //       _id: "3",
+  //       firstName: "Kamran",
+  //       secondName: "Əliyev",
+  //       profilePicture: "",
+  //       email: "kamran.aliyev@example.com",
+  //       phoneNumber: "+994704441122",
+  //       gender: "male",
+  //       birthDate: "1997-11-05T00:00:00.000Z",
+  //       balance: 0,
+  //       createdAt: "2025-03-02T15:05:00.000Z",
+  //       updatedAt: "2025-05-30T08:12:00.000Z",
+  //       isBlocked: true,
+  //       isDeleted: false,
+  //       addresses: [],
+  //       favoriteProducts: ["p130", "p135"],
+  //       cart: [],
+  //     },
+
+  //     /* ====== 4‑cü İSTİFADƏÇİ ============================================= */
+  //     {
+  //       _id: "4",
+  //       firstName: "Nigar",
+  //       secondName: "Məmmədova",
+  //       profilePicture: "",
+  //       email: "nigar.mammadova@example.com",
+  //       phoneNumber: "+994505551133",
+  //       gender: "female",
+  //       birthDate: "2000-07-08T00:00:00.000Z",
+  //       balance: 310.2,
+  //       createdAt: "2024-11-15T11:00:00.000Z",
+  //       updatedAt: "2025-06-28T09:00:00.000Z",
+  //       isBlocked: false,
+  //       isDeleted: true,
+  //       favoriteProducts: [],
+  //       cart: [
+  //         {
+  //           product: "p250", // yalnız ID
+  //           quantity: 1,
+  //         },
+  //       ],
+  //     },
+
+  //     /* ====== 5‑ci İSTİFADƏÇİ ============================================= */
+  //     {
+  //       _id: "5",
+  //       firstName: "Elvin",
+  //       secondName: "Quliyev",
+  //       profilePicture: "",
+  //       email: "elvin.quliyev@example.com",
+  //       phoneNumber: "+994555678910",
+  //       gender: "male",
+  //       birthDate: "1998-09-12T00:00:00.000Z",
+  //       balance: 70,
+  //       createdAt: "2025-02-11T13:45:00.000Z",
+  //       updatedAt: "2025-06-29T18:22:00.000Z",
+  //       isBlocked: false,
+  //       isDeleted: false,
+  //       addresses: [],
+  //       favoriteProducts: [],
+  //       cart: [],
+  //     },
+
+  //     /* ====== 6‑cı İSTİFADƏÇİ ============================================= */
+  //     {
+  //       _id: "6",
+  //       firstName: "Zəhra",
+  //       secondName: "Rzayeva",
+  //       profilePicture: "",
+  //       email: "zehra.rzayeva@example.com",
+  //       phoneNumber: "+994505551144",
+  //       gender: "female",
+  //       birthDate: "2002-06-20T00:00:00.000Z",
+  //       balance: 198.9,
+  //       createdAt: "2025-04-07T08:05:00.000Z",
+  //       updatedAt: "2025-06-30T11:55:00.000Z",
+  //       isBlocked: false,
+  //       isDeleted: false,
+  //       favoriteProducts: [
+  //         {
+  //           _id: "p301",
+  //           name: { az: "Espresso" },
+  //           code: "ES‑005",
+  //           price: 3,
+  //           discount: { percentage: 0 },
+  //           imageUrls: [],
+  //         },
+  //       ],
+  //       cart: [
+  //         {
+  //           _id: "c6",
+  //           product: {
+  //             _id: "p302",
+  //             name: { az: "Americano" },
+  //             code: "AM‑006",
+  //             price: 3.5,
+  //             discount: { percentage: 5 },
+  //             imageUrls: [],
+  //           },
+  //           quantity: 3,
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // };
+
+  const imgUrl = `${
+    import.meta.env.VITE_API_IMAGE_URL
+  }/public/uploads/users/profile_pictures`;
 
   return (
     <div className="wrapper-admin wallet pb-8">
@@ -313,7 +353,7 @@ const [openLightbox, setOpenLightbox] = useState(false);
         <table className="min-w-[750px]">
           <thead>
             <tr>
-              <th>Id</th>
+              {/* <th>Id</th> */}
               <th>Adı</th>
               <th>Profil şəkli</th>
               <th>E-mail</th>
@@ -321,21 +361,31 @@ const [openLightbox, setOpenLightbox] = useState(false);
             </tr>
           </thead>
           <tbody>
-            {user?.users?.map((user) => (
+            {data?.data?.map((user) => (
               <tr key={user._id}>
-                <td>{user._id}</td>
-                <td>{user.firstName} {user.secondName}</td>
-                <td className="flex justify-center ">
+                {/* <td>{user._id}</td> */}
+                <td>
+                  {user.firstName} {user.secondName}
+                </td>
+                <td className="flex justify-center items-center">
                   <img
                     className="w-[60px] max-w-[60px] max-h-[60px] h-[60px] object-cover border-[1.2px] border-[#00704ba5] cursor-pointer rounded-lg transition-all duration-300
         ring-2 ring-gray-100 hover:ring-4 hover:ring-emerald-100"
-                    src={user.profilePicture ? `${imgUrl}/${user.profilePicture}` : `https://ui-avatars.com/api/?name=${user.firstName}+${user.secondName}&background=random`}
+                    src={
+                      user.profilePicture
+                        ? `${imgUrl}/${user.profilePicture}`
+                        : `https://ui-avatars.com/api/?name=${user.firstName}+${user.secondName}&background=random`
+                    }
                     alt={user.firstName}
-                    onClick={() => user.profilePicture && handleImageClick(user.profilePicture)}
+                    onClick={() =>
+                      user.profilePicture &&
+                      handleImageClick(user.profilePicture)
+                    }
                   />
                 </td>
                 <td>{user.email}</td>
-                <td className="space-x-3 min-w-64">
+                <td className="gap-2 min-w-64 space-x-2 h-full ">
+                  {/* Details */}
                   <button
                     title="Ətraflı məlumat"
                     className="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-all duration-200 hover:scale-105"
@@ -343,6 +393,64 @@ const [openLightbox, setOpenLightbox] = useState(false);
                   >
                     <FiEye size={18} />
                   </button>
+                  {/* Restore */}
+                  {user?.delete?.isDeleted && (
+                    <button
+                      title="Bərpa et"
+                      className="p-2 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition-all duration-200 hover:scale-105"
+                      onClick={() => handleRestoreUser(restoreUser, user._id)}
+                    >
+                      <FiRepeat size={18} />
+                    </button>
+                  )}
+                  {/* Block / Unblock */}
+                  {!user?.block?.isBlocked ? (
+                    <button
+                      title="Blokla"
+                      className="p-2 rounded-lg bg-yellow-50 text-yellow-600 hover:bg-yellow-100 transition-all duration-200 hover:scale-105"
+                      onClick={() => handleBlockUser(blockUser, user._id)}
+                    >
+                      <FiSlash size={18} />
+                    </button>
+                  ) : (
+                    <button
+                      title="Blokdan çıxar"
+                      className="p-2 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition-all duration-200 hover:scale-105"
+                      onClick={() => handleUnblockUser(unblockUser, user._id)}
+                    >
+                      <FiUserCheck size={18} />
+                    </button>
+                  )}
+                  {/* Delete */}
+                  <button
+                    title="Sil"
+                    className="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-all duration-200 hover:scale-105"
+                    onClick={() => handleDeleteUser(deleteUser, user._id)}
+                  >
+                    <FiTrash2 size={18} />
+                  </button>
+                  {/* Permanent Delete */}
+                  <button
+                    title="Tam sil"
+                    className="p-2 rounded-lg bg-red-100 text-red-700 hover:bg-red-200 transition-all duration-200 hover:scale-105"
+                    onClick={() =>
+                      handlePermanentDeleteUser(permanentDeleteUser, user._id)
+                    }
+                  >
+                    <FiX size={18} />
+                  </button>
+                  {/* Delete Photo */}
+                  {user.profilePicture && (
+                    <button
+                      title="Foto sil"
+                      className="p-2 rounded-lg bg-gray-50 text-gray-600 hover:bg-gray-100 transition-all duration-200 hover:scale-105"
+                      onClick={() =>
+                        handleUserPhotoDelete(userPhotoDelete, user._id)
+                      }
+                    >
+                      <FiUserX size={18} />
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
@@ -363,26 +471,26 @@ const [openLightbox, setOpenLightbox] = useState(false);
           )}
         </AnimatePresence>
       </main>
-        {data?.users?.length > 0 && (
-            <Pagination
-                currentPage={currentPage}
-                getPaginationRange={getPaginationRange}
-                data={data?.pagination}
-                setCurrentPage={setCurrentPage}
-                isFetching={isFetching}
-              />
-            )}
-         <Lightbox
-                open={openLightbox}
-                close={() => setOpenLightbox(false)}
-                slides={[{ src: imageSrc }]}
-                plugins={[Thumbnails, Fullscreen]}
-                carousel={{ finite: true }}
-                render={{
-                  buttonPrev: () => null,
-                  buttonNext: () => null
-                }}
-              />
+      {data?.users?.length > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          getPaginationRange={getPaginationRange}
+          data={data?.pagination}
+          setCurrentPage={setCurrentPage}
+          isFetching={isFetching}
+        />
+      )}
+      <Lightbox
+        open={openLightbox}
+        close={() => setOpenLightbox(false)}
+        slides={[{ src: imageSrc }]}
+        plugins={[Thumbnails, Fullscreen]}
+        carousel={{ finite: true }}
+        render={{
+          buttonPrev: () => null,
+          buttonNext: () => null,
+        }}
+      />
     </div>
   );
 };

@@ -203,6 +203,11 @@ table th:last-child {
 
 .button {
   cursor: pointer;
+  // will-change: auto;
+}
+button{
+  will-change: transform;
+  cursor: pointer;
 }
 
 

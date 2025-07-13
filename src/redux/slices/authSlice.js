@@ -14,6 +14,7 @@ const authSlice = createSlice({
             state.refreshToken = action.payload.refreshToken;
             state.role = action.payload.role;
             state.authLoaded = true;
+            console.log(action.payload)
         },
         clearTokens: (state) => {
             state.accessToken = null;

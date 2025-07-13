@@ -43,9 +43,9 @@ const AdminLogin = () => {
 
             <div className='container__right lg:w-1/2 w-full flex justify-center items-center flex-col bg-gradient-to-br from-gray-50 to-gray-100 h-full relative overflow-hidden'>
                 {/* Decorative geometric shapes */}
-                <div className="absolute top-20 right-20 w-32 h-32 bg-red-500/10 rotate-45 transform-gpu"></div>
+                <div className="absolute top-20 right-20 w-32 h-32 bg-blue-500/10 rotate-45 transform-gpu"></div>
                 <div className="absolute bottom-40 left-20 w-40 h-40 bg-black/5 transform-gpu"></div>
-                <div className="absolute top-1/3 left-1/4 w-16 h-16 border-2 border-red-300/30 transform-gpu"></div>
+                <div className="absolute top-1/3 left-1/4 w-16 h-16 border-2 border-blue-300/30 transform-gpu"></div>
                 <div className="absolute bottom-1/4 right-1/3 w-24 h-24 border border-black/10 rotate-12 transform-gpu"></div>
                 
                 {/* Diagonal lines */}
@@ -57,14 +57,14 @@ const AdminLogin = () => {
                 </div>
                 
                 <div className="bg-white p-8 shadow-lg w-[420px] max-w-[90%] border-0 relative z-10">
-                    {/* Red geometric accents */}
-                    <div className="absolute top-0 left-0 w-24 h-3 bg-red-500"></div>
-                    <div className="absolute top-0 left-0 w-3 h-24 bg-red-500"></div>
+                    {/* blue geometric accents */}
+                    <div className="absolute top-0 left-0 w-24 h-3 bg-blue-500"></div>
+                    <div className="absolute top-0 left-0 w-3 h-24 bg-blue-500"></div>
                     <div className="absolute bottom-0 right-0 w-24 h-3 bg-black"></div>
                     <div className="absolute bottom-0 right-0 w-3 h-24 bg-black"></div>
                     <div className="flex flex-col items-center mb-8">
                         <h1 className="text-3xl font-bold text-gray-900 mb-2 inter">Admin Panel</h1>
-                        <div className="h-1 w-16 bg-red-500 rounded-full"></div>
+                        <div className="h-1 w-16 bg-blue-500 rounded-full"></div>
                     </div>
                     
                     <form 
@@ -78,7 +78,7 @@ const AdminLogin = () => {
                                     value={username}
                                     onChange={(e) => setUsername(e.target.value)}
                                     required
-                                    className="w-full px-4 py-3 border-0 border-l-2 border-gray-300 focus:border-l-red-500 bg-gray-50 transition-all duration-200 outline-none inter" 
+                                    className="w-full px-4 py-3 border-0 border-l-2 border-gray-300 focus:border-l-blue-500 bg-gray-50 transition-all duration-200 outline-none inter" 
                                     placeholder="İstifadəçi adınızı daxil edin" 
                                 />
                                 <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
@@ -95,7 +95,7 @@ const AdminLogin = () => {
                                     onChange={(e) => setPassword(e.target.value)}
                                     type={type ? "text" : "password"}
                                     required
-                                    className="w-full px-4 py-3 border-0 border-l-2 border-gray-300 focus:border-l-red-500 bg-gray-50 transition-all duration-200 outline-none inter" 
+                                    className="w-full px-4 py-3 border-0 border-l-2 border-gray-300 focus:border-l-blue-500 bg-gray-50 transition-all duration-200 outline-none inter" 
                                     placeholder="Şifrənizi daxil edin" 
                                 />
                                 <span 
@@ -137,7 +137,7 @@ const AdminLogin = () => {
                             disabled={isLoading}
                             className="w-full py-3 bg-black hover:bg-gray-800 text-white font-medium transition-all duration-200 flex justify-center items-center shadow-md hover:shadow-lg relative overflow-hidden group"
                         >
-                            <div className="absolute top-0 left-0 w-0 h-full bg-red-500 transition-all duration-300 group-hover:w-full z-0"></div>
+                            <div className="absolute top-0 left-0 w-0 h-full bg-blue-500 transition-all duration-300 group-hover:w-full z-0"></div>
                             <span className="relative z-10 flex items-center gap-2 inter">
                                 {isLoading ? (
                                     <>
@@ -148,12 +148,12 @@ const AdminLogin = () => {
                                     "Daxil ol"
                                 )}
                             </span>
-                            <div className="absolute top-0 right-0 w-3 h-3 bg-red-500"></div>
-                            <div className="absolute bottom-0 left-0 w-3 h-3 bg-red-500"></div>
+                            <div className="absolute top-0 right-0 w-3 h-3 bg-blue-500"></div>
+                            <div className="absolute bottom-0 left-0 w-3 h-3 bg-blue-500"></div>
                         </button>
                         
                         <div className="mt-6 text-center">
-                            <Link to="/" className="text-red-500 hover:text-red-700 text-sm font-medium transition-colors inter">
+                            <Link to="/" className="text-blue-500 hover:text-blue-700 text-sm font-medium transition-colors inter">
                                 Ana səhifəyə qayıt
                             </Link>
                         </div>
